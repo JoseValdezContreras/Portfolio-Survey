@@ -1,5 +1,5 @@
 import streamlit as st
-from st_gsheets_connection import GSheetsConnection
+from st_gsheets_connection import GSheetsConnection  # This stays as is!
 
 st.set_page_config(layout="centered")
 
@@ -23,4 +23,5 @@ if not df.empty:
     st.write("#### Audience Expertise")
     st.bar_chart(df['primary area of expertise'].value_counts())
 else:
+
     st.info("Waiting for the first response!")
