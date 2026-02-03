@@ -1,6 +1,5 @@
 import streamlit as st
-from st_gsheets_connection import GSheetsConnection  # This stays as is!
-
+   from streamlit_gsheets import GSheetsConnection  ✅
 st.set_page_config(layout="centered")
 
 st.title("📊 Community Insights")
@@ -25,3 +24,4 @@ if not df.empty:
 else:
 
     st.info("Waiting for the first response!")
+
