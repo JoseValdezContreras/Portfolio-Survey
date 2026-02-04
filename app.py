@@ -7,7 +7,7 @@ st.set_page_config(layout="wide", page_icon="📊", page_title="Portfolio Feedba
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1uAU0MQ1P8j_zY7BFudHjSXJBd-FzB3WnRszucn93PJs/edit?usp=sharing"
-FORM_URL = "<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfK7K6v-JIzL2puZ3g8U-xEysbBq-AS19guYMFqCFnYrc4BSQ/viewform?embedded=true" width="640" height="813" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>"  # Add your Google Form URL here
+FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfK7K6v-JIzL2puZ3g8U-xEysbBq-AS19guYMFqCFnYrc4BSQ/viewform?embedded=true"  # Add your Google Form URL here
 CSV_URL = SHEET_URL.replace('/edit?usp=sharing', '/export?format=csv')
 
 # Profanity filter - add/remove words as needed
@@ -330,4 +330,5 @@ with st.expander("🔧 Debug Information"):
     st.write(df.dtypes)
     st.write("**Sample Data:**")
     st.dataframe(df.head(3))
+
 
