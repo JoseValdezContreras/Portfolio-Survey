@@ -97,9 +97,6 @@ def render_dashboard():
     with m3:
         unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == 'No but it is actually pretty cool').sum()
         unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
-        st.metric("👀 Seen Form Before", f"{unique_pct:.0f}%")
-        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == 'No but it is actually pretty cool').sum()
-        unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
         st.metric("Form Uniqueness", f"{unique_pct:.0f}%")
     with m4:
         s_count = (df['suggestions_clean'].str.strip() != '').sum()
@@ -134,6 +131,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
