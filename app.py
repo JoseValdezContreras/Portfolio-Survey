@@ -98,7 +98,7 @@ def render_dashboard():
         # COUNTING "No but it is actually pretty cool" responses
         no_responses = (df[COL_SEEN_FORM].str.lower().str.strip() == 'no but it is actually pretty cool').sum()
         no_pct = (no_responses / len(df) * 100) if len(df) > 0 else 0
-        st.metric("First Time Seeing Form", f"{no_pct:.0f}%")
+        st.metric("Form Uniqueness %", f"{no_pct:.0f}%")
     with m4:
         s_count = (df['suggestions_clean'].str.strip() != '').sum()
         st.metric("💬 Suggestions", s_count)
@@ -124,6 +124,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
