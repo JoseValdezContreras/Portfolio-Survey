@@ -95,7 +95,7 @@ def render_dashboard():
         avg = df[COL_RATING].mean()
         st.metric("⭐ Avg Rating", f"{avg:.1f}/10" if pd.notna(avg) else "N/A")
     with m3:
-        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == 'No but it is actually pretty cool').sum()
+        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == "No but it is actually pretty cool").sum()
         unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
         st.metric("Form Uniqueness", f"{unique_pct:.0f}%")
     with m4:
@@ -105,14 +105,7 @@ def render_dashboard():
     st.markdown("---")
 
     # Visualizations
-    col_left, col_right = st.columns(2)
-    with col_left:
-        st.subheader("📋 Seen Google Form on Portfolio?")
-        form_counts = df[COL_SEEN_FORM].str.lower().str.strip().value_counts()
-        form_data = pd.DataFrame({'Response': ['No but it is actually pretty cool', 'Yes, I am unfazed but good job anyway'], 'Count': [form_counts.get('No but it is actually pretty cool', 0), form_counts.get('Yes, I am unfazed but good job anyway', 0)]})
-        st.bar_chart(form_data.set_index('Response'))
 
-    with col_right:
         st.subheader("⭐ Rating Distribution")
         rating_counts = df[COL_RATING].value_counts().sort_index()
         all_ratings = pd.Series(0, index=range(1, 11))
@@ -131,6 +124,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
