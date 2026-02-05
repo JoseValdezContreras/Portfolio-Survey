@@ -95,7 +95,10 @@ def render_dashboard():
         avg = df[COL_RATING].mean()
         st.metric("⭐ Avg Rating", f"{avg:.1f}/10" if pd.notna(avg) else "N/A")
     with m3:
-        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == "No but it is actually pretty cool").sum()
+        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == 'No but it is actually pretty cool').sum()
+        unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
+        st.metric("👀 Seen Form Before", f"{yes_pct:.0f}%")
+        unique_count = (df[COL_SEEN_FORM].str.lower().str.strip() == 'No but it is actually pretty cool').sum()
         unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
         st.metric("Form Uniqueness", f"{unique_pct:.0f}%")
     with m4:
@@ -105,8 +108,15 @@ def render_dashboard():
     st.markdown("---")
 
     # Visualizations
+    col_left, col_right = st.columns(2)
+    with col_left:
+        st.subheader("📋 Seen Google Form on Portfolio?")
+        form_counts = df[COL_SEEN_FORM].str.lower().str.strip().value_counts()
+        form_data = pd.DataFrame({'Response': ['Yes, I am unfazed but good job anyway', 'No but it is actually pretty cool'], 'Count': [form_counts.get('No but it is actually pretty cool', 0), form_counts.get('Yes, I am unfazed but good job anyway', 0)]})
+        st.bar_chart(form_data.set_index('Response'))
 
-      ("⭐ Rating Distribution")
+    with col_right:
+        st.subheader("⭐ Rating Distribution")
         rating_counts = df[COL_RATING].value_counts().sort_index()
         all_ratings = pd.Series(0, index=range(1, 11))
         all_ratings.update(rating_counts)
@@ -119,11 +129,13 @@ def render_dashboard():
     if not s_df.empty:
         for _, row in s_df.tail(10).iterrows():
             st.markdown(f"""<div class="suggestion-card"><div class="suggestion-text">"{row['suggestions_clean']}"</div></div>""", unsafe_allow_html=True)
-    
+
     st.caption(f"🔄 Last updated: {datetime.now().strftime('%I:%M:%S %p')}")
 
 # Execute the fragment
 render_dashboard()
+
+
 
 
 
