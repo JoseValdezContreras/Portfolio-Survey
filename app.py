@@ -106,7 +106,7 @@ def render_dashboard():
 
     # Visualizations
 
-        st.subheader("⭐ Rating Distribution")
+      ("⭐ Rating Distribution")
         rating_counts = df[COL_RATING].value_counts().sort_index()
         all_ratings = pd.Series(0, index=range(1, 11))
         all_ratings.update(rating_counts)
@@ -124,6 +124,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
