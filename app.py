@@ -2,15 +2,14 @@ import streamlit as st
 import pandas as pd
 import re
 from datetime import datetime
-import time
 
 st.set_page_config(layout="wide", page_icon="📊", page_title="Portfolio Feedback")
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1uAU0MQ1P8j_zY7BFudHjSXJBd-FzB3WnRszucn93PJs/edit?usp=sharing"
 CSV_URL = SHEET_URL.replace('/edit?usp=sharing', '/export?format=csv')
-# Define your form URL here for the fallback button
-FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform" 
+# Update with your actual form ID
+FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfK7K6v-JIzL2puZ3g8U-xEysbBq-AS19guYMFqCFnYrc4BSQ/viewform"
 
 PROFANITY_LIST = [
     'damn', 'hell', 'shit', 'fuck', 'ass', 'bitch', 'bastard', 'crap',
@@ -35,7 +34,7 @@ def clean_text(text):
             cleaned = pattern.sub(replacement, cleaned)
     return cleaned
 
-@st.cache_data(ttl=60) # Syncs with the fragment timer
+@st.cache_data(ttl=60)
 def load_data():
     try:
         df = pd.read_csv(CSV_URL)
@@ -90,33 +89,28 @@ def render_dashboard():
 
     # Key Metrics
     m1, m2, m3, m4 = st.columns(4)
-    with m1: st.metric("📝 Total Responses", len(df))
+    with m1: 
+        st.metric("📝 Total Responses", len(df))
     with m2: 
         avg = df[COL_RATING].mean()
         st.metric("⭐ Avg Rating", f"{avg:.1f}/10" if pd.notna(avg) else "N/A")
     with m3:
-        unique_count = (df[COL_SEEN_FORM].str == 'No but it is actually pretty cool').sum()
-        unique_pct = (unique_count / len(df) * 100) if len(df) > 0 else 0
-        st.metric("Form Uniqueness", f"{unique_pct:.0f}%")
+        # COUNTING "No but it is actually pretty cool" responses
+        no_responses = (df[COL_SEEN_FORM].str.lower().str.strip() == 'no but it is actually pretty cool').sum()
+        no_pct = (no_responses / len(df) * 100) if len(df) > 0 else 0
+        st.metric("First Time Seeing Form", f"{no_pct:.0f}%")
     with m4:
         s_count = (df['suggestions_clean'].str.strip() != '').sum()
         st.metric("💬 Suggestions", s_count)
 
     st.markdown("---")
 
-    # Visualizations
-    col_left,col_right = st.columns(2)
-    with col_right:
-        st.subheader("📋 Seen Google Form on Portfolio?")
-        form_counts = df[COL_SEEN_FORM].str.lower().str.strip().value_counts()
-        form_data = pd.DataFrame({'Response': ['Yes, I am unfazed but good job anyway', 'No but it is actually pretty cool'], 'Count': [form_counts.get('No but it is actually pretty cool', 0), form_counts.get('Yes, I am unfazed but good job anyway', 0)]})
-        st.bar_chart(form_data.set_index('Response'))
-    with col_left:
-        st.subheader("⭐ Rating Distribution")
-        rating_counts = df[COL_RATING].value_counts().sort_index()
-        all_ratings = pd.Series(0, index=range(1, 11))
-        all_ratings.update(rating_counts)
-        st.bar_chart(all_ratings)
+    # Visualizations - ONLY RATING DISTRIBUTION (bar chart removed)
+    st.subheader("⭐ Rating Distribution")
+    rating_counts = df[COL_RATING].value_counts().sort_index()
+    all_ratings = pd.Series(0, index=range(1, 11))
+    all_ratings.update(rating_counts)
+    st.bar_chart(all_ratings)
 
     # Suggestions Section
     st.markdown("---")
@@ -130,7 +124,6 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
-
 
 
 
