@@ -105,11 +105,9 @@ def render_dashboard():
     st.markdown("---")
 
     # Visualizations
-    col_left, col_right = st.columns(2)
+    col_left = st.columns(1)
+
     with col_left:
-
-
-    with col_right:
         st.subheader("⭐ Rating Distribution")
         rating_counts = df[COL_RATING].value_counts().sort_index()
         all_ratings = pd.Series(0, index=range(1, 11))
@@ -128,6 +126,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
