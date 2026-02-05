@@ -107,10 +107,7 @@ def render_dashboard():
     # Visualizations
     col_left, col_right = st.columns(2)
     with col_left:
-        st.subheader("📋 Seen Google Form on Portfolio?")
-        form_counts = df[COL_SEEN_FORM].str.lower().str.strip().value_counts()
-        form_data = pd.DataFrame({'Response': ['Yes, I am unfazed but good job anyway', 'No but it is actually pretty cool'], 'Count': [form_counts.get('No but it is actually pretty cool', 0), form_counts.get('Yes, I am unfazed but good job anyway', 0)]})
-        st.bar_chart(form_data.set_index('Response'))
+
 
     with col_right:
         st.subheader("⭐ Rating Distribution")
@@ -131,6 +128,7 @@ def render_dashboard():
 
 # Execute the fragment
 render_dashboard()
+
 
 
 
